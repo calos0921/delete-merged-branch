@@ -8,10 +8,10 @@ _Want to see more badges? [Click here](#badges)!_
 
 _Want to run this app with [GitHub Actions](https://github.com/features/actions)? [Click here](#running-in-github-actions)_
 
-A GitHub app built with [Probot](https://github.com/probot/probot) that automatically deletes a branch after it's merged. That's it, enjoy! 
+A GitHub app built with [Probot](https://github.com/probot/probot) that automatically deletes a branch after it's merged. That's it, enjoy!
 
 ### 🔔 Wait, do you really need this? 🔔
-You may not need this app as GitHub [recently added this feature](https://github.blog/changelog/2019-07-31-automatically-delete-head-branches-of-pull-requests/) natively to their platform. It allows you to automatically delete the head branch after a merge. If you need more advanced controls and configuration settings, this app is still well suited for the job. 
+You may not need this app as GitHub [recently added this feature](https://github.blog/changelog/2019-07-31-automatically-delete-head-branches-of-pull-requests/) natively to their platform. It allows you to automatically delete the head branch after a merge. If you need more advanced controls and configuration settings, this app is still well suited for the job.
 
 
 ## Running it locally
@@ -45,13 +45,18 @@ This GitHub app listens to the `pull_request.closed` webhook. If a pull request 
 ## Configuration
 The optional app configuration YAML file should be saved as `.github/delete-merged-branch-config.yml`. At the moment it supports the following options:
 
+- `on_base` _(array)_ - list of base branches that should not be automatically deleted after a merge. Wildcards supported.
 - `exclude` _(array)_ - list of branches that should not be automatically deleted after a merge. Wildcards supported.
 - `delete_closed_pr` _(bool)_ whether or not a branch should be deleted if PR is closed without merging
 
 Example `.github/delete-merged-branch-config.yml`:
 
 ```
-exclude: 
+on_base:
+  - development
+  - qa
+
+exclude:
   - development
   - qa
   - feature-*
@@ -66,10 +71,10 @@ This app is compatible with [GitHub Actions](https://github.com/features/actions
 
 ```yml
 name: delete branch on close pr
-on: 
+on:
   pull_request:
     types: [closed]
-  
+
 jobs:
   delete-branch:
     runs-on: ubuntu-latest
